@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { fetchCurrentUser } from "@/utils/api";
 import { User as UserType } from "@/types";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -92,6 +93,8 @@ const Navbar = () => {
 
         {/* Desktop Auth Buttons / User Menu */}
         <div className="hidden md:flex items-center space-x-4">
+          <ThemeToggle />
+          
           <div className="relative group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-full blur opacity-30 group-hover:opacity-100 transition duration-300"></div>
             <Button
@@ -171,6 +174,11 @@ const Navbar = () => {
           >
             Upload Notes
           </Link>
+          
+          <div className="flex items-center py-2 border-b border-border/50">
+            <ThemeToggle />
+            <span className="ml-3 text-sm">Toggle theme</span>
+          </div>
           
           {currentUser ? (
             <Link
