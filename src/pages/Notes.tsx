@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -29,7 +28,7 @@ const Notes = () => {
     searchParams.get("query") || ""
   );
   const [selectedSubject, setSelectedSubject] = useState(
-    searchParams.get("subject") || ""
+    searchParams.get("subject") || "all"
   );
   const [sortBy, setSortBy] = useState(
     searchParams.get("sort") || "recent"
@@ -62,7 +61,7 @@ const Notes = () => {
     let result = [...notes];
     
     // Filter by subject
-    if (selectedSubject) {
+    if (selectedSubject && selectedSubject !== "all") {
       result = result.filter(
         (note) => note.subject.code === selectedSubject
       );
@@ -100,7 +99,7 @@ const Notes = () => {
     // Update URL search params
     const params = new URLSearchParams();
     if (searchQuery) params.set("query", searchQuery);
-    if (selectedSubject) params.set("subject", selectedSubject);
+    if (selectedSubject && selectedSubject !== "all") params.set("subject", selectedSubject);
     if (sortBy) params.set("sort", sortBy);
     setSearchParams(params, { replace: true });
   }, [notes, searchQuery, selectedSubject, sortBy, setSearchParams]);
@@ -112,7 +111,7 @@ const Notes = () => {
 
   const clearFilters = () => {
     setSearchQuery("");
-    setSelectedSubject("");
+    setSelectedSubject("all");
     setSortBy("recent");
     setSearchParams({});
   };
@@ -192,7 +191,7 @@ const Notes = () => {
                           <SelectValue placeholder="All Subjects" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">All Subjects</SelectItem>
+                          <SelectItem value="all">All Subjects</SelectItem>
                           {subjects.map((subject) => (
                             <SelectItem
                               key={subject.code}
@@ -228,7 +227,7 @@ const Notes = () => {
                       </Select>
                     </div>
                     
-                    {(searchQuery || selectedSubject || sortBy !== "recent") && (
+                    {(searchQuery || selectedSubject !== "all" || sortBy !== "recent") && (
                       <Button
                         type="button"
                         variant="ghost"
@@ -286,7 +285,7 @@ const Notes = () => {
                   <div className="flex justify-between items-center mb-6">
                     <p className="text-sm text-muted-foreground">
                       Found {filteredNotes.length} notes
-                      {selectedSubject && (
+                      {selectedSubject !== "all" && (
                         <>
                           {" "}in{" "}
                           <span className="font-medium text-foreground">
