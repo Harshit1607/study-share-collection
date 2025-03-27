@@ -28,17 +28,22 @@ const apiRequest = async <T>(
     options.body = JSON.stringify(body);
   }
   
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-  
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error(`API request failed: ${endpoint}`, error);
+    throw error;
   }
-  
-  return response.json();
 };
 
-// API functions that now connect to a real backend
+// Real API functions that connect to Java backend
 export const fetchNotes = async (): Promise<Note[]> => {
   return apiRequest<Note[]>(ENDPOINTS.NOTES);
 };
