@@ -134,7 +134,7 @@ public class NoteController {
         List<RatingDto> ratingDtos = note.getRatings().stream()
                 .map(rating -> new RatingDto(
                         rating.getId(),
-                        rating.getValue(),
+                        rating.getRatingValue(),
                         rating.getDate(),
                         new UserDto(
                                 rating.getUser().getId(),

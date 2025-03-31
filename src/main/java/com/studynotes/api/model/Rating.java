@@ -27,4 +27,7 @@ public class Rating {
     
     @DBRef
     private Note note;
+    
+    private String userId;
+    private String noteId;
 }

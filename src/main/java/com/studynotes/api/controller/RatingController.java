@@ -64,6 +64,8 @@ public class RatingController {
             rating.setDate(new Date());
             rating.setUser(user);
             rating.setNote(note);
+            rating.setUserId(user.getId());
+            rating.setNoteId(noteId);
         }
         
         Rating savedRating = ratingRepository.save(rating);

@@ -37,6 +37,8 @@ public class Note {
     @DBRef
     private Subject subject;
     
+    private String subjectCode;
+    
     @DBRef
     private List<Comment> comments = new ArrayList<>();
     
