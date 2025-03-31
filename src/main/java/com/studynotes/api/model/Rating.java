@@ -18,7 +18,7 @@ public class Rating {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false)
+    @Column(name = "rating_value", nullable = false)
     private int value;
 
     @Temporal(TemporalType.TIMESTAMP)
