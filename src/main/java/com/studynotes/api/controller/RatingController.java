@@ -56,11 +56,11 @@ public class RatingController {
         Rating rating;
         if (existingRating.isPresent()) {
             rating = existingRating.get();
-            rating.setValue(value);
+            rating.setRatingValue(value);
             rating.setDate(new Date());
         } else {
             rating = new Rating();
-            rating.setValue(value);
+            rating.setRatingValue(value);
             rating.setDate(new Date());
             rating.setUser(user);
             rating.setNote(note);
@@ -70,7 +70,7 @@ public class RatingController {
         
         RatingDto ratingDto = new RatingDto(
                 savedRating.getId(),
-                savedRating.getValue(),
+                savedRating.getRatingValue(),
                 savedRating.getDate(),
                 new UserDto(user.getId(), user.getName(), user.getEmail()));
         

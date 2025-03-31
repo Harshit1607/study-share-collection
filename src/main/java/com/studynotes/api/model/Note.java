@@ -1,57 +1,54 @@
 
 package com.studynotes.api.model;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-@Entity
-@Table(name = "notes")
+@Document(collection = "notes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Note {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @NotBlank
     @Size(max = 100)
     private String name;
     
-    @Embedded
     private FileInfo file;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private Date uploadDate;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @DBRef
     private User user;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_code")
+    @DBRef
     private Subject subject;
     
-    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
-    private Set<Comment> comments = new HashSet<>();
+    @DBRef
+    private List<Comment> comments = new ArrayList<>();
     
-    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
-    private Set<Rating> ratings = new HashSet<>();
+    @DBRef
+    private List<Rating> ratings = new ArrayList<>();
     
     @Transient
     public double getAverageRating() {
         if (ratings.isEmpty()) {
             return 0;
         }
-        return ratings.stream().mapToInt(Rating::getValue).average().getAsDouble();
+        return ratings.stream().mapToInt(Rating::getRatingValue).average().getAsDouble();
     }
     
     @Transient

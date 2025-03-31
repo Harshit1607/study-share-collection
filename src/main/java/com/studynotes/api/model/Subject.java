@@ -1,18 +1,19 @@
 
 package com.studynotes.api.model;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@Table(name = "subjects")
+@Document(collection = "subjects")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +31,6 @@ public class Subject {
     
     private int semester;
     
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
-    private Set<Note> notes = new HashSet<>();
+    @DBRef
+    private List<Note> notes = new ArrayList<>();
 }

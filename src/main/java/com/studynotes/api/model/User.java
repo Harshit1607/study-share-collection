@@ -1,28 +1,26 @@
 
 package com.studynotes.api.model;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@Table(name = "users", 
-       uniqueConstraints = { 
-           @UniqueConstraint(columnNames = "email") 
-       })
+@Document(collection = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @NotBlank
@@ -32,18 +30,19 @@ public class User {
     @NotBlank
     @Size(max = 50)
     @Email
+    @Indexed(unique = true)
     private String email;
 
     @NotBlank
     @Size(max = 120)
     private String password;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Note> notes = new HashSet<>();
+    @DBRef
+    private List<Note> notes = new ArrayList<>();
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Comment> comments = new HashSet<>();
+    @DBRef
+    private List<Comment> comments = new ArrayList<>();
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Rating> ratings = new HashSet<>();
+    @DBRef
+    private List<Rating> ratings = new ArrayList<>();
 }
