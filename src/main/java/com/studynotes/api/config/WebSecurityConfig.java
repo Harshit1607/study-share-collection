@@ -47,9 +47,9 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // Update with your frontend URL in production
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080")); // Frontend URL
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -65,12 +65,12 @@ public class WebSecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> 
                 auth.requestMatchers("/auth/**").permitAll()
-                    .requestMatchers("/h2-console/**").permitAll()
+                    .requestMatchers("/files/**").permitAll()
+                    .requestMatchers("/subjects/**").permitAll()
+                    .requestMatchers("/notes").permitAll()
+                    .requestMatchers("/notes/**").permitAll()
                     .anyRequest().authenticated()
             );
-        
-        // For H2 console
-        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
         
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         
