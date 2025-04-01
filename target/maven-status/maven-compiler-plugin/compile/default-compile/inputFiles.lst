@@ -9,6 +9,7 @@ E:\Vs Code\WebDev\study-share-collection\src\main\java\com\studynotes\api\model\
 E:\Vs Code\WebDev\study-share-collection\src\main\java\com\studynotes\api\repository\SubjectRepository.java
 E:\Vs Code\WebDev\study-share-collection\src\main\java\com\studynotes\api\dto\SignupRequestDto.java
 E:\Vs Code\WebDev\study-share-collection\src\main\java\com\studynotes\api\security\UserDetailsImpl.java
+E:\Vs Code\WebDev\study-share-collection\src\main\java\com\studynotes\api\config\MongoConfig.java
 E:\Vs Code\WebDev\study-share-collection\src\main\java\com\studynotes\api\model\Subject.java
 E:\Vs Code\WebDev\study-share-collection\src\main\java\com\studynotes\api\repository\CommentRepository.java
 E:\Vs Code\WebDev\study-share-collection\src\main\java\com\studynotes\api\exception\FileStorageException.java
