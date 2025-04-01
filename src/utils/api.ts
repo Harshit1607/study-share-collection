@@ -22,6 +22,7 @@ const apiRequest = async <T>(
     method,
     headers,
     credentials: 'include',
+    mode: 'cors',
   };
   
   if (body) {
@@ -29,6 +30,7 @@ const apiRequest = async <T>(
   }
   
   try {
+    console.log(`Making API request to: ${API_BASE_URL}${endpoint}`);
     const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
     
     if (!response.ok) {
@@ -143,6 +145,7 @@ export const uploadNote = async (name: string, subjectCode: string, file: File):
     method: 'POST',
     headers,
     credentials: 'include',
+    mode: 'cors',
     body: formData,
   });
   
