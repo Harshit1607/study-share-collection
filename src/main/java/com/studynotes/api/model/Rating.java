@@ -10,16 +10,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Document(collection = "ratings")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "ratings")
 public class Rating {
     @Id
     private String id;
-
     private int ratingValue;
-
     private Date date;
     
     @DBRef
@@ -28,6 +26,5 @@ public class Rating {
     @DBRef
     private Note note;
     
-    private String userId;
     private String noteId;
 }

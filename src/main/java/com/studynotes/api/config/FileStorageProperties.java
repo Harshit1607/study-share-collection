@@ -7,9 +7,9 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "file")
+@Component
 @Getter
 @Setter
-@Component
 public class FileStorageProperties {
     private String uploadDir;
 }
