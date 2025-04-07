@@ -1,0 +1,8 @@
+com\studyshare\controller\AuthController.class
+com\studyshare\controller\NoteController.class
+com\studyshare\repository\UserRepository.class
+com\studyshare\repository\NoteRepository.class
+com\studyshare\model\User.class
+com\studyshare\service\NoteService.class
+com\studyshare\StudyShareApplication.class
+com\studyshare\model\Note.class
