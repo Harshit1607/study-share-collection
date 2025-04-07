@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:3000")
+// The CrossOrigin annotation is not needed here since we have global CORS configuration
 public class AuthController {
     @Autowired
     private UserService userService;
@@ -31,10 +31,16 @@ public class AuthController {
     
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> loginRequest) {
+        String email = loginRequest.get("email");
+        String password = loginRequest.get("password");
+        
         // This is a placeholder. In a real app, you'd authenticate the user
         // and generate a token
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Login endpoint placeholder");
+        response.put("email", email);
+        response.put("token", "dummy-token-for-" + email);
+        
         return ResponseEntity.ok(response);
     }
 }
