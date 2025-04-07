@@ -5,8 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { useEffect } from "react";
-import { toast } from "sonner";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -19,14 +17,6 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => {
-  useEffect(() => {
-    // Show a toast notification about mock data
-    toast("Frontend Mode Active", {
-      description: "Using mock data for development. Backend has been removed.",
-      duration: 6000,
-    });
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>

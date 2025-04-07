@@ -1,8 +1,8 @@
 
-// Configuration for mock API (frontend only)
+// Configuration for the real backend API
 export const API_BASE_URL = '/api';
 
-// Mock API endpoints 
+// API endpoints 
 export const ENDPOINTS = {
   NOTES: '/notes',
   SUBJECTS: '/subjects',

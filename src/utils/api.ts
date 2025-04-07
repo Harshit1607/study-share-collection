@@ -1,271 +1,186 @@
 
 import { Comment, Note, NoteDetail, Rating, Subject, User } from "@/types";
-import { ENDPOINTS } from "./config";
-import { 
-  mockUsers, 
-  mockSubjects, 
-  mockNotes, 
-  mockNoteDetails, 
-  mockComments, 
-  mockRatings,
-  mockAuthTokens,
-  defaultLoggedInUser
-} from "./mockData";
+import { API_BASE_URL, ENDPOINTS } from "./config";
 
-// Helper function to simulate API delay
-const simulateApiDelay = async <T>(data: T): Promise<T> => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(data);
-    }, 300); // Simulate network delay of 300ms
-  });
+// Helper function to handle API responses
+const handleResponse = async (response: Response) => {
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.message || 'An error occurred');
+  }
+  return response.json();
 };
 
-// Mock API functions that use our mock data
+// API functions that connect to the real backend
 export const fetchNotes = async (): Promise<Note[]> => {
-  console.log("Mock API: Fetching all notes");
-  return simulateApiDelay(mockNotes);
+  console.log("API: Fetching all notes");
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.NOTES}`);
+  return handleResponse(response);
 };
 
 export const fetchNotesBySubject = async (subjectCode: string): Promise<Note[]> => {
-  console.log(`Mock API: Fetching notes for subject ${subjectCode}`);
-  const filteredNotes = mockNotes.filter(note => note.subject.code === subjectCode);
-  return simulateApiDelay(filteredNotes);
+  console.log(`API: Fetching notes for subject ${subjectCode}`);
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.NOTES}?subject=${subjectCode}`);
+  return handleResponse(response);
 };
 
 export const fetchNote = async (id: string): Promise<NoteDetail | null> => {
-  console.log(`Mock API: Fetching note detail for ID ${id}`);
-  const noteDetail = mockNoteDetails[id];
+  console.log(`API: Fetching note detail for ID ${id}`);
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.NOTES}/${id}`);
   
-  if (!noteDetail) {
+  if (!response.ok && response.status === 404) {
     console.error(`Note with ID ${id} not found`);
     return null;
   }
   
-  return simulateApiDelay(noteDetail);
+  return handleResponse(response);
 };
 
 export const fetchSubjects = async (): Promise<Subject[]> => {
-  console.log("Mock API: Fetching all subjects");
-  return simulateApiDelay(mockSubjects);
+  console.log("API: Fetching all subjects");
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.SUBJECTS}`);
+  return handleResponse(response);
 };
 
 export const fetchCurrentUser = async (): Promise<User | null> => {
-  console.log("Mock API: Fetching current user");
+  console.log("API: Fetching current user");
   const token = localStorage.getItem('auth-token');
   
   if (!token) {
-    return simulateApiDelay(null);
+    return null;
   }
   
-  // In a real app, we'd validate the token
-  // For mock purposes, we'll just return the default user
-  return simulateApiDelay(defaultLoggedInUser);
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.USERS}/current`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  
+  if (!response.ok) {
+    localStorage.removeItem('auth-token');
+    return null;
+  }
+  
+  return handleResponse(response);
 };
 
 export const loginUser = async (email: string, password: string): Promise<{user: User, token: string}> => {
-  console.log(`Mock API: Login attempt for ${email}`);
+  console.log(`API: Login attempt for ${email}`);
   
-  // Simulate authentication logic
-  await simulateApiDelay(null);
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.AUTH.LOGIN}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  });
   
-  const user = mockUsers.find(u => u.email === email);
+  const data = await handleResponse(response);
   
-  if (!user || password !== "password") { // Any password "password" works for mock
-    throw new Error("Invalid email or password");
+  if (data.token) {
+    localStorage.setItem('auth-token', data.token);
   }
   
-  const token = mockAuthTokens[email];
-  localStorage.setItem('auth-token', token);
-  
-  return {
-    user,
-    token
-  };
+  return data;
 };
 
 export const registerUser = async (name: string, email: string, password: string): Promise<{user: User, token: string}> => {
-  console.log(`Mock API: Register attempt for ${email}`);
+  console.log(`API: Register attempt for ${email}`);
   
-  // Simulate registration logic
-  await simulateApiDelay(null);
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.AUTH.REGISTER}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, email, password })
+  });
   
-  if (mockUsers.some(u => u.email === email)) {
-    throw new Error("Email already in use");
+  const data = await handleResponse(response);
+  
+  if (data.token) {
+    localStorage.setItem('auth-token', data.token);
   }
   
-  // Create a new mock user
-  const newUser: User = {
-    id: `user${mockUsers.length + 1}`,
-    name,
-    email
-  };
-  
-  // In a real app, we'd persist this user
-  mockUsers.push(newUser);
-  mockAuthTokens[email] = `mock-token-${email}`;
-  
-  const token = mockAuthTokens[email];
-  localStorage.setItem('auth-token', token);
-  
-  return {
-    user: newUser,
-    token
-  };
+  return data;
 };
 
 export const logoutUser = async (): Promise<void> => {
-  console.log("Mock API: Logging out user");
+  console.log("API: Logging out user");
+  const token = localStorage.getItem('auth-token');
+  
+  if (token) {
+    await fetch(`${API_BASE_URL}${ENDPOINTS.AUTH.LOGOUT}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }).catch(error => console.error("Logout error:", error));
+  }
+  
   localStorage.removeItem('auth-token');
-  return simulateApiDelay(undefined);
+  return;
 };
 
 export const addComment = async (noteId: string, text: string): Promise<Comment> => {
-  console.log(`Mock API: Adding comment to note ${noteId}`);
+  console.log(`API: Adding comment to note ${noteId}`);
   
   const token = localStorage.getItem('auth-token');
   if (!token) {
     throw new Error("Authentication required");
   }
   
-  // Get the current user (for this mock, we use the default)
-  const user = defaultLoggedInUser;
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.NOTES}/${noteId}/comments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ text })
+  });
   
-  // Create a new comment
-  const newComment: Comment = {
-    id: `comment${Date.now()}`,
-    text,
-    date: new Date(),
-    user
-  };
-  
-  // Add to our mock comments
-  if (!mockComments[noteId]) {
-    mockComments[noteId] = [];
-  }
-  
-  mockComments[noteId].push(newComment);
-  
-  // Update comment count
-  const note = mockNotes.find(n => n.id === noteId);
-  if (note) {
-    note.commentCount++;
-  }
-  
-  // Update note details
-  if (mockNoteDetails[noteId]) {
-    mockNoteDetails[noteId].comments.push(newComment);
-    mockNoteDetails[noteId].commentCount = mockNoteDetails[noteId].comments.length;
-  }
-  
-  return simulateApiDelay(newComment);
+  return handleResponse(response);
 };
 
 export const addRating = async (noteId: string, value: number): Promise<Rating> => {
-  console.log(`Mock API: Adding rating ${value} to note ${noteId}`);
+  console.log(`API: Adding rating ${value} to note ${noteId}`);
   
   const token = localStorage.getItem('auth-token');
   if (!token) {
     throw new Error("Authentication required");
   }
   
-  // Get the current user (for this mock, we use the default)
-  const user = defaultLoggedInUser;
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.NOTES}/${noteId}/ratings`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ value })
+  });
   
-  // Create a new rating
-  const newRating: Rating = {
-    id: `rating${Date.now()}`,
-    value,
-    date: new Date(),
-    user
-  };
-  
-  // Add to our mock ratings
-  if (!mockRatings[noteId]) {
-    mockRatings[noteId] = [];
-  }
-  
-  // Remove previous rating by this user if exists
-  const existingRatingIndex = mockRatings[noteId].findIndex(r => r.user.id === user.id);
-  if (existingRatingIndex >= 0) {
-    mockRatings[noteId].splice(existingRatingIndex, 1);
-  }
-  
-  mockRatings[noteId].push(newRating);
-  
-  // Update average rating
-  const note = mockNotes.find(n => n.id === noteId);
-  if (note) {
-    const ratings = mockRatings[noteId] || [];
-    const sum = ratings.reduce((acc, r) => acc + r.value, 0);
-    note.averageRating = ratings.length > 0 ? sum / ratings.length : 0;
-  }
-  
-  // Update note details
-  if (mockNoteDetails[noteId]) {
-    // If this user already rated, replace the rating
-    const detailRatingIndex = mockNoteDetails[noteId].ratings.findIndex(r => r.user.id === user.id);
-    if (detailRatingIndex >= 0) {
-      mockNoteDetails[noteId].ratings[detailRatingIndex] = newRating;
-    } else {
-      mockNoteDetails[noteId].ratings.push(newRating);
-    }
-    
-    // Update average rating
-    const ratings = mockNoteDetails[noteId].ratings;
-    const sum = ratings.reduce((acc, r) => acc + r.value, 0);
-    mockNoteDetails[noteId].averageRating = ratings.length > 0 ? sum / ratings.length : 0;
-  }
-  
-  return simulateApiDelay(newRating);
+  return handleResponse(response);
 };
 
 export const uploadNote = async (name: string, subjectCode: string, file: File): Promise<Note> => {
-  console.log(`Mock API: Uploading note "${name}" for subject ${subjectCode}`);
+  console.log(`API: Uploading note "${name}" for subject ${subjectCode}`);
   
   const token = localStorage.getItem('auth-token');
   if (!token) {
     throw new Error("Authentication required");
   }
   
-  // Get the current user (for this mock, we use the default)
-  const user = defaultLoggedInUser;
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('subjectCode', subjectCode);
+  formData.append('file', file);
   
-  // Find the selected subject
-  const subject = mockSubjects.find(s => s.code === subjectCode);
-  if (!subject) {
-    throw new Error(`Subject with code ${subjectCode} not found`);
-  }
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.NOTES}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    body: formData
+  });
   
-  // Create a new note
-  const newNote: Note = {
-    id: `note${mockNotes.length + 1}`,
-    name,
-    uploadDate: new Date(),
-    user,
-    subject,
-    averageRating: 0,
-    commentCount: 0,
-    file: {
-      fileName: file.name,
-      fileType: file.type,
-      downloadUrl: `/mock/files/${file.name}`
-    }
-  };
-  
-  // Add to our mock notes
-  mockNotes.push(newNote);
-  
-  // Create empty comments and ratings arrays
-  mockComments[newNote.id] = [];
-  mockRatings[newNote.id] = [];
-  
-  // Create a note detail object
-  mockNoteDetails[newNote.id] = {
-    ...newNote,
-    comments: [],
-    ratings: []
-  };
-  
-  return simulateApiDelay(newNote);
+  return handleResponse(response);
 };
