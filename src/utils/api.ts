@@ -59,8 +59,8 @@ export const fetchCurrentUser = async (): Promise<User | null> => {
     console.log("No auth token found, returning default user for testing");
     // For testing, you can return the default user 
     // Uncomment the line below to automatically be logged in as Harshit
-    // return defaultLoggedInUser;
-    return null;
+    return defaultLoggedInUser;
+    // return null;
   }
   
   // Find user by token

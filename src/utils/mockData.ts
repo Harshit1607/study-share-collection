@@ -1,4 +1,3 @@
-
 import { Comment, Note, NoteDetail, Rating, Subject, User } from "@/types";
 
 // Mock user data
@@ -106,7 +105,7 @@ export const mockNotes: Note[] = [
   },
   {
     id: "note4",
-    name: "CNS Cryptography",
+    name: "CNS Unit 1",
     uploadDate: new Date("2024-02-25"),
     user: mockUsers[0], // Harshit
     subject: mockSubjects[3], // CNS
