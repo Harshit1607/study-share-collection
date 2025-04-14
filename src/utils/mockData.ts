@@ -1,3 +1,4 @@
+
 import { Comment, Note, NoteDetail, Rating, Subject, User } from "@/types";
 
 // Mock user data
@@ -25,7 +26,7 @@ export const mockSubjects: Subject[] = [
     code: "JAVA101",
     name: "Java Programming",
     year: 2,
-    semester: 1
+    semester: 2
   },
   {
     code: "TOC202",
@@ -36,25 +37,25 @@ export const mockSubjects: Subject[] = [
   {
     code: "DBMS301",
     name: "Database Management Systems",
-    year: 3,
-    semester: 1
+    year: 2,
+    semester: 2
   },
   {
     code: "CNS305",
     name: "Computer Networks and Systems",
-    year: 3,
-    semester: 1
+    year: 2,
+    semester: 2
   },
   {
     code: "PSL205",
     name: "Probability, Statistics, and Linear Programming",
     year: 2,
-    semester: 1
+    semester: 2
   },
   {
     code: "TW105",
     name: "Technical Writing",
-    year: 1,
+    year: 2,
     semester: 2
   }
 ];
