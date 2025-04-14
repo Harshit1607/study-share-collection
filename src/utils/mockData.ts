@@ -1,4 +1,3 @@
-
 import { Comment, Note, NoteDetail, Rating, Subject, User } from "@/types";
 
 // Mock user data
@@ -42,13 +41,13 @@ export const mockSubjects: Subject[] = [
   },
   {
     code: "CNS305",
-    name: "Computer Networks & Security",
+    name: "Computer Networks and Systems",
     year: 3,
     semester: 1
   },
   {
     code: "PSL205",
-    name: "Programming Software Lab",
+    name: "Probability, Statistics, and Linear Programming",
     year: 2,
     semester: 1
   },
@@ -289,4 +288,3 @@ export const mockAuthTokens: Record<string, string> = {
 
 // Default logged in user (for testing)
 export const defaultLoggedInUser = mockUsers[0]; // Harshit
-
