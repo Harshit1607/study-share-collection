@@ -5,56 +5,56 @@ import { Comment, Note, NoteDetail, Rating, Subject, User } from "@/types";
 export const mockUsers: User[] = [
   {
     id: "user1",
-    name: "John Smith",
-    email: "john@example.com"
+    name: "Harshit",
+    email: "harshit@example.com"
   },
   {
     id: "user2",
-    name: "Emma Wilson",
-    email: "emma@example.com"
+    name: "Teena",
+    email: "teena@example.com"
   },
   {
     id: "user3",
-    name: "Michael Johnson",
-    email: "michael@example.com"
+    name: "Pratham",
+    email: "pratham@example.com"
   }
 ];
 
 // Mock subject data
 export const mockSubjects: Subject[] = [
   {
-    code: "CS101",
-    name: "Introduction to Computer Science",
-    year: 1,
-    semester: 1
-  },
-  {
-    code: "MATH201",
-    name: "Advanced Calculus",
+    code: "JAVA101",
+    name: "Java Programming",
     year: 2,
     semester: 1
   },
   {
-    code: "PHYS101",
-    name: "Physics Fundamentals",
-    year: 1,
+    code: "TOC202",
+    name: "Theory of Computation",
+    year: 2,
     semester: 2
   },
   {
-    code: "ENG205",
-    name: "Technical Writing",
+    code: "DBMS301",
+    name: "Database Management Systems",
+    year: 3,
+    semester: 1
+  },
+  {
+    code: "CNS305",
+    name: "Computer Networks & Security",
+    year: 3,
+    semester: 1
+  },
+  {
+    code: "PSL205",
+    name: "Programming Software Lab",
     year: 2,
     semester: 1
   },
   {
-    code: "BIO110",
-    name: "Introduction to Biology",
-    year: 1,
-    semester: 1
-  },
-  {
-    code: "HIST150",
-    name: "World History",
+    code: "TW105",
+    name: "Technical Writing",
     year: 1,
     semester: 2
   }
@@ -64,54 +64,82 @@ export const mockSubjects: Subject[] = [
 export const mockNotes: Note[] = [
   {
     id: "note1",
-    name: "CS101 Lecture Notes - Algorithms",
-    uploadDate: new Date("2023-09-10"),
-    user: mockUsers[0],
-    subject: mockSubjects[0],
-    averageRating: 4.5,
-    commentCount: 3,
+    name: "Java OOP Concepts",
+    uploadDate: new Date("2024-03-15"),
+    user: mockUsers[0], // Harshit
+    subject: mockSubjects[0], // Java
+    averageRating: 4.8,
+    commentCount: 5,
     file: {
-      fileName: "cs101_algorithms.pdf",
+      fileName: "java_oop_concepts.pdf",
       fileType: "application/pdf",
-      downloadUrl: "/mock/files/cs101_algorithms.pdf"
+      downloadUrl: "/mock/files/java_oop_concepts.pdf"
     }
   },
   {
     id: "note2",
-    name: "Calculus Formulas and Examples",
-    uploadDate: new Date("2023-08-15"),
-    user: mockUsers[1],
-    subject: mockSubjects[1],
-    averageRating: 5.0,
-    commentCount: 5,
+    name: "TOC - Finite Automata",
+    uploadDate: new Date("2024-02-10"),
+    user: mockUsers[1], // Teena
+    subject: mockSubjects[1], // TOC
+    averageRating: 4.5,
+    commentCount: 3,
     file: {
-      fileName: "calculus_formulas.pdf",
+      fileName: "toc_finite_automata.pdf",
       fileType: "application/pdf",
-      downloadUrl: "/mock/files/calculus_formulas.pdf"
+      downloadUrl: "/mock/files/toc_finite_automata.pdf"
     }
   },
   {
     id: "note3",
-    name: "Physics Lab Report Template",
-    uploadDate: new Date("2023-10-05"),
-    user: mockUsers[2],
-    subject: mockSubjects[2],
-    averageRating: 4.0,
-    commentCount: 2,
+    name: "DBMS Normalization",
+    uploadDate: new Date("2024-03-20"),
+    user: mockUsers[2], // Pratham
+    subject: mockSubjects[2], // DBMS
+    averageRating: 4.7,
+    commentCount: 4,
     file: {
-      fileName: "physics_lab_template.docx",
-      fileType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      downloadUrl: "/mock/files/physics_lab_template.docx"
+      fileName: "dbms_normalization.pdf",
+      fileType: "application/pdf",
+      downloadUrl: "/mock/files/dbms_normalization.pdf"
     }
   },
   {
     id: "note4",
-    name: "Technical Writing Guidelines",
-    uploadDate: new Date("2023-07-22"),
-    user: mockUsers[0],
-    subject: mockSubjects[3],
-    averageRating: 4.2,
-    commentCount: 4,
+    name: "CNS Cryptography",
+    uploadDate: new Date("2024-02-25"),
+    user: mockUsers[0], // Harshit
+    subject: mockSubjects[3], // CNS
+    averageRating: 4.6,
+    commentCount: 6,
+    file: {
+      fileName: "cns_cryptography.pdf",
+      fileType: "application/pdf",
+      downloadUrl: "/mock/files/cns_cryptography.pdf"
+    }
+  },
+  {
+    id: "note5",
+    name: "PSL Lab Manual",
+    uploadDate: new Date("2024-01-15"),
+    user: mockUsers[1], // Teena
+    subject: mockSubjects[4], // PSL
+    averageRating: 4.3,
+    commentCount: 2,
+    file: {
+      fileName: "psl_lab_manual.pdf",
+      fileType: "application/pdf",
+      downloadUrl: "/mock/files/psl_lab_manual.pdf"
+    }
+  },
+  {
+    id: "note6",
+    name: "Technical Report Writing Guide",
+    uploadDate: new Date("2024-01-05"),
+    user: mockUsers[2], // Pratham
+    subject: mockSubjects[5], // TW
+    averageRating: 4.9,
+    commentCount: 7,
     file: {
       fileName: "technical_writing_guide.pdf",
       fileType: "application/pdf",
@@ -125,35 +153,49 @@ export const mockComments: Record<string, Comment[]> = {
   "note1": [
     {
       id: "comment1",
-      text: "These notes were very helpful. Thanks for sharing!",
-      date: new Date("2023-09-12"),
-      user: mockUsers[1]
+      text: "Very detailed explanation of inheritance in Java, thanks!",
+      date: new Date("2024-03-16"),
+      user: mockUsers[1] // Teena
     },
     {
       id: "comment2",
-      text: "Could you add more examples for the sorting algorithms?",
-      date: new Date("2023-09-15"),
-      user: mockUsers[2]
+      text: "Could you add more examples on interfaces?",
+      date: new Date("2024-03-17"),
+      user: mockUsers[2] // Pratham
     },
     {
       id: "comment3",
-      text: "Great explanation of recursive functions.",
-      date: new Date("2023-09-18"),
-      user: mockUsers[0]
+      text: "Great notes for beginners in OOP.",
+      date: new Date("2024-03-18"),
+      user: mockUsers[1] // Teena
     }
   ],
   "note2": [
     {
       id: "comment4",
-      text: "This saved me before the midterm!",
-      date: new Date("2023-08-20"),
-      user: mockUsers[2]
+      text: "This helped me understand DFAs better!",
+      date: new Date("2024-02-12"),
+      user: mockUsers[0] // Harshit
     },
     {
       id: "comment5",
-      text: "The examples really helped clarify the concepts.",
-      date: new Date("2023-08-22"),
-      user: mockUsers[0]
+      text: "Could you add more problems on NFA to DFA conversion?",
+      date: new Date("2024-02-15"),
+      user: mockUsers[2] // Pratham
+    }
+  ],
+  "note3": [
+    {
+      id: "comment6",
+      text: "The 3NF examples were very helpful.",
+      date: new Date("2024-03-22"),
+      user: mockUsers[0] // Harshit
+    },
+    {
+      id: "comment7",
+      text: "Excellent explanation of functional dependencies.",
+      date: new Date("2024-03-25"),
+      user: mockUsers[1] // Teena
     }
   ]
 };
@@ -164,28 +206,42 @@ export const mockRatings: Record<string, Rating[]> = {
     {
       id: "rating1",
       value: 5,
-      date: new Date("2023-09-11"),
-      user: mockUsers[1]
+      date: new Date("2024-03-16"),
+      user: mockUsers[1] // Teena
     },
     {
       id: "rating2",
       value: 4,
-      date: new Date("2023-09-14"),
-      user: mockUsers[2]
+      date: new Date("2024-03-17"),
+      user: mockUsers[2] // Pratham
     }
   ],
   "note2": [
     {
       id: "rating3",
       value: 5,
-      date: new Date("2023-08-16"),
-      user: mockUsers[0]
+      date: new Date("2024-02-11"),
+      user: mockUsers[0] // Harshit
     },
     {
       id: "rating4",
+      value: 4,
+      date: new Date("2024-02-13"),
+      user: mockUsers[2] // Pratham
+    }
+  ],
+  "note3": [
+    {
+      id: "rating5",
       value: 5,
-      date: new Date("2023-08-19"),
-      user: mockUsers[2]
+      date: new Date("2024-03-21"),
+      user: mockUsers[0] // Harshit
+    },
+    {
+      id: "rating6",
+      value: 5,
+      date: new Date("2024-03-22"),
+      user: mockUsers[1] // Teena
     }
   ]
 };
@@ -204,11 +260,21 @@ export const mockNoteDetails: Record<string, NoteDetail> = {
   },
   "note3": {
     ...mockNotes[2],
-    comments: [],
-    ratings: []
+    comments: mockComments["note3"],
+    ratings: mockRatings["note3"]
   },
   "note4": {
     ...mockNotes[3],
+    comments: [],
+    ratings: []
+  },
+  "note5": {
+    ...mockNotes[4],
+    comments: [],
+    ratings: []
+  },
+  "note6": {
+    ...mockNotes[5],
     comments: [],
     ratings: []
   }
@@ -216,10 +282,11 @@ export const mockNoteDetails: Record<string, NoteDetail> = {
 
 // Simulate auth token storage
 export const mockAuthTokens: Record<string, string> = {
-  "john@example.com": "mock-token-john",
-  "emma@example.com": "mock-token-emma",
-  "michael@example.com": "mock-token-michael"
+  "harshit@example.com": "mock-token-harshit",
+  "teena@example.com": "mock-token-teena",
+  "pratham@example.com": "mock-token-pratham"
 };
 
 // Default logged in user (for testing)
-export const defaultLoggedInUser = mockUsers[0];
+export const defaultLoggedInUser = mockUsers[0]; // Harshit
+
